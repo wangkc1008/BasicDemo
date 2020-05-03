@@ -1,4 +1,4 @@
-from common.DoubleLinkedList import DoubleLinkedList, Node
+from cache.DoubleLinkedList import DoubleLinkedList, Node
 
 
 class LFUNode(Node):
