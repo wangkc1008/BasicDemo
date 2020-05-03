@@ -5,7 +5,7 @@ import struct
 
 class IPParser:
 
-    IP_HEADER_LENGTH = 20
+    IP_HEADER_LENGTH = 20  # 报文前二十字节为ip头部
 
     @classmethod
     def parse_ip_header(cls, ip_header):
@@ -55,5 +55,5 @@ class IPParser:
 
     @classmethod
     def parse(cls, packet):
-        ip_header = packet[:cls.IP_HEADER_LENGTH] # 报文前二十字节为ip头部
+        ip_header = packet[:cls.IP_HEADER_LENGTH]
         return cls.parse_ip_header(ip_header)

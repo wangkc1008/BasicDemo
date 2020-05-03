@@ -1,4 +1,4 @@
-from cache.DoubleLinkedList import DoubleLinkedList, Node
+from DoubleLinkedList import DoubleLinkedList, Node
 
 
 class LFUNode(Node):
@@ -58,9 +58,11 @@ class LFUCache(object):
         if key not in self.map:
             return None
 
+        # 节点存在 更新使用频率
         old_node = self.map.get(key)
         new_node = self.__update_freq(old_node)
         self.map[key] = new_node
+
         return new_node.value
 
     def put(self, key, value):
@@ -84,6 +86,7 @@ class LFUCache(object):
                 del self.map[node.key]
                 self.size -= 1
 
+            # 构建新的节点 更新频率
             new_node = LFUNode(key, value)
             new_node = self.__update_freq(new_node)
             self.map[key] = new_node
@@ -99,7 +102,6 @@ class LFUCache(object):
         for freq, link in self.freq_map.items():
             print("frequencies： %d" % freq)
             link.print()
-        # print(self.freq_map[1].size)
 
 
 if __name__ == '__main__':

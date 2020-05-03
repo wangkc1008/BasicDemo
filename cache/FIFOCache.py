@@ -65,7 +65,7 @@ class FIFOCache(object):
         :return:
         """
         self.list.print()
-        print(self.map)
+        # print(self.map)
 
 
 if __name__ == '__main__':

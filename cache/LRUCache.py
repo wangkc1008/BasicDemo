@@ -1,4 +1,5 @@
-from cache.DoubleLinkedList import DoubleLinkedList, Node
+from DoubleLinkedList import DoubleLinkedList, Node
+
 
 class LRUCache(object):
 
@@ -65,7 +66,6 @@ class LRUCache(object):
         :return:
         """
         self.list.print()
-        # print(self.map)
 
 
 if __name__ == '__main__':

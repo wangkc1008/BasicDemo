@@ -20,6 +20,10 @@ class ServerProcessTask(AsyncTask):
         self.packet = packet
 
     def process(self):
+        """
+        异步处理方法
+        :return:
+        """
         headers = {
             'network_header': None,
             'transport_header': None
@@ -28,7 +32,7 @@ class ServerProcessTask(AsyncTask):
         ip_header = IPParser.parse(self.packet)
         if ip_header['protocol'] == 17:  # UDP协议
             headers['transport_header'] = UDPParser.parser(self.packet)
-        elif ip_header['protocol'] == 6:
+        elif ip_header['protocol'] == 6:  # TCP协议
             headers['transport_header'] = TCPParser.parser(self.packet)
         headers['network_header'] = ip_header
         return headers

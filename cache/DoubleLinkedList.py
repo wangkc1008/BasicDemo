@@ -204,6 +204,7 @@ class DoubleLinkedList:
 if __name__ == '__main__':
     double_linked_list = DoubleLinkedList(10)
     nodes = []
+    # 构建十个节点的双向列表
     for i in range(10):
         node_item = Node(i, i)
         nodes.append(node_item)
