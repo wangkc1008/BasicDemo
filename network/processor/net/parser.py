@@ -12,17 +12,17 @@ class IPParser:
         """
         IP报文格式
         1. 4位IP-version 4位IP头长度 8位服务类型 16位报文总长度
-        2. 16位标识符 3位标记位 3位片偏移 暂时不关注此行
+        2. 16位标识符 3位标记位 13位片偏移 暂时不关注此行
         3. 8位TTL 8位协议 16位头部校验和
         4. 32位源IP地址
         5. 32位目的IP地址
         :param ip_header:
         :return:
         """
-        line1 = struct.unpack('>BBH', ip_header[:4])
-        ip_version = line1[0] >> 4
+        line1 = struct.unpack('>BBH', ip_header[:4])  # 先按照8位、8位、16位解析
+        ip_version = line1[0] >> 4  # 通过右移4位获取高四位
         # 报文头部长度的单位是32位 即四个字节
-        iph_length = (line1[0] & 15) * 4
+        iph_length = (line1[0] & 15) * 4  # 与1111与运算获取低四位
         packet_length = line1[2]
         line3 = struct.unpack('>BBH', ip_header[8: 12])
         TTL = line3[0]
@@ -56,4 +56,5 @@ class IPParser:
     @classmethod
     def parse(cls, packet):
         ip_header = packet[:cls.IP_HEADER_LENGTH]
+
         return cls.parse_ip_header(ip_header)

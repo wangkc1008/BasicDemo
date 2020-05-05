@@ -19,6 +19,7 @@ def data2str(data):
             str += chr(ch)
     return str
 
+
 class UDPParser(TransParser):
 
     @classmethod
@@ -31,6 +32,7 @@ class UDPParser(TransParser):
         :return:
         """
         udp_header = struct.unpack('>HHHH', udp_header)
+
         # 返回结果
         # src_port 源端口
         # dst_port 目的端口
@@ -45,9 +47,11 @@ class UDPParser(TransParser):
 
     @classmethod
     def parser(cls, packet):
-        result = cls.parse_udp_header(packet[cls.IP_HEADER_LENGTH:cls.IP_HEADER_LENGTH + cls.UDP_HEADER_LENGTH])
-        result['data'] = data2str(packet[cls.IP_HEADER_LENGTH + cls.UDP_HEADER_LENGTH:])
-        return result
+
+        return cls.parse_udp_header(packet[cls.IP_HEADER_LENGTH:cls.IP_HEADER_LENGTH + cls.UDP_HEADER_LENGTH])
+
+        # result = cls.parse_udp_header(packet[cls.IP_HEADER_LENGTH:cls.IP_HEADER_LENGTH + cls.UDP_HEADER_LENGTH])
+        # result['data'] = data2str(packet[cls.IP_HEADER_LENGTH + cls.UDP_HEADER_LENGTH:])
 
 
 class TCPParser(TransParser):
@@ -71,9 +75,9 @@ class TCPParser(TransParser):
         seq_num = line2[0]
         line3 = struct.unpack('>L', tcp_header[8:12])
         ack_num = line3[0]
-        line4 = struct.unpack('>BBH', tcp_header[12:16])
-        data_offset = line4[0] >> 4
-        flags = line4[1] & int(b'00111111', 2)
+        line4 = struct.unpack('>BBH', tcp_header[12:16])  # 先按照8位、8位、16位解析
+        data_offset = line4[0] >> 4  # 第一个8位右移四位获取高四位
+        flags = line4[1] & int(b'00111111', 2)  # 第二个八位与00111111进行与运算获取低六位
         FIN = flags & 1
         SYN = (flags >> 1) & 1
         RST = (flags >> 2) & 1
@@ -84,6 +88,7 @@ class TCPParser(TransParser):
         line5 = struct.unpack('>HH', tcp_header[16:20])
         tcp_checksum = line5[0]
         urg_pointer = line5[1]
+
         # 返回结果
         # src_port 源端口
         # dst_port 目的端口
@@ -121,7 +126,9 @@ class TCPParser(TransParser):
 
     @classmethod
     def parser(cls, packet):
-        result = cls.parse_tcp_header(packet[cls.IP_HEADER_LENGTH:cls.IP_HEADER_LENGTH + cls.TCP_HEADER_LENGTH])
-        result['data'] = data2str(packet[cls.IP_HEADER_LENGTH + cls.TCP_HEADER_LENGTH:])
-        return result
+
+        return cls.parse_tcp_header(packet[cls.IP_HEADER_LENGTH:cls.IP_HEADER_LENGTH + cls.TCP_HEADER_LENGTH])
+
+        # result = cls.parse_tcp_header(packet[cls.IP_HEADER_LENGTH:cls.IP_HEADER_LENGTH + cls.TCP_HEADER_LENGTH])
+        # result['data'] = data2str(packet[cls.IP_HEADER_LENGTH + cls.TCP_HEADER_LENGTH:])
 
