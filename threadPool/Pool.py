@@ -42,11 +42,15 @@ class ThreadProcess(threading.Thread):
                 print('set result:%d' % task.id)
                 task.set_result(result)
 
-    def dismiss(self):
+    def __dismiss(self):
         self.dismiss_flag.set()
 
     def stop(self):
-        self.dismiss()
+        """
+        线程停止方法
+        :return:
+        """
+        self.__dismiss()
 
 
 class ThreadPool:
@@ -99,6 +103,7 @@ class ThreadPool:
             raise TaskTypeException()
         res = self.task_queue.put(task)
         print('put task %d' % task.id)
+
         return res
 
     def batch_put(self, task_list):

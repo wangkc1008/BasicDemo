@@ -38,6 +38,7 @@ class AsyncTask(Task):
         :param result:
         :return:
         """
+        # 加锁 通知被阻塞线程
         self.condition.acquire()
         self.result = result
         self.condition.notify()
@@ -48,9 +49,11 @@ class AsyncTask(Task):
         获取返回结果 结果不存在时会阻塞当前线程
         :return:
         """
+        # 加锁 等待任务处理结果写入
         self.condition.acquire()
         if not self.result:
             self.condition.wait()
         result = self.result
         self.condition.release()
+
         return result
